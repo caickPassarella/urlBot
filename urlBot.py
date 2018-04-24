@@ -16,7 +16,7 @@ def downloadfile(name, url):
     name = name + ".mp4"
     r = requests.get(url)
     print("****Connected****")
-    f = open(name, 'wb')
+    f = open(name, 'w')
     print("Donloading.....")
     for chunk in r.iter_content(chunk_size=255):
         if chunk:  # filter out keep-alive new chunks
@@ -40,15 +40,20 @@ def authenticate():
 commentID_path = 'commentID.txt'
 
 
-def get_url(redditBot):
+def get_url(redditBot, processing):
     for submission in redditBot.subreddit('videos').new():
         url = submission.url
 
+        
         if 'youtube' in url:
             youtube_link = url
+            
+        try:    
             downloadfile('youtube', youtube_link)
 
-            # gif_youtube = giphypop.upload(['bot', 'gifBot'], link)
+        except:
+            print('error')
+            gif_youtube = giphypop.upload(['bot', 'gifBot'], youtube_link)
             print('This is a YouTube link: {}'.format(youtube_link))
 
         elif 'https://clips.twitch.tv' in url:
@@ -58,7 +63,7 @@ def get_url(redditBot):
 
             except:
                 print('error')
-            # gif_twitch = giphypop.upload(['bot', 'gifBot'], twitch_link)
+            gif_twitch = giphypop.upload(['bot', 'gifBot'], twitch_link)
             print('This is a twitch link: {}'.format(twitch_link))
 
         elif 'https://twitter.com' in url:
@@ -68,7 +73,7 @@ def get_url(redditBot):
 
             except:
                 print('error')
-            # gif_twitter = giphypop.upload(['bot', 'gifBot'], twitter_link)
+            gif_twitter = giphypop.upload(['bot', 'gifBot'], twitter_link)
             print('This is a Twitter link: {}'.format(twitter_link))
 
 
